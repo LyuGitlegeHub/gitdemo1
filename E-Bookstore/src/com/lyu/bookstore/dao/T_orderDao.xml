@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.lyu.bookstore.dao.T_orderDao">
+	<resultMap id="T_orderBaseResultMap" type="com.lyu.bookstore.bean.T_order">
+		<id property="oid" jdbcType="INTEGER"  column="oid"/>
+		<result property="username" jdbcType="VARCHAR" column="username"  />
+		<association property="items" javaType="com.lyu.bookstore.bean.Items" >
+			<id column="iid" property="iid" jdbcType="INTEGER" />
+			<result column="orderid" property="oid" jdbcType="INTEGER" />
+			<result column="bookid" property="bid" jdbcType="INTEGER" />
+			<result column="createdate" property="createdate" jdbcType="TIMESTAMP" />
+			<result column="count" property="count" jdbcType="INTEGER" />
+			<result column="price" property="price" jdbcType="DOUBLE" />
+			<result column="total_price" property="totalPrice" jdbcType="DOUBLE" />
+			<association property="book" javaType="com.lyu.bookstore.bean.Book">
+				<id column="bid" property="bid" jdbcType="INTEGER" />
+				<result column="bookname" property="bookname" jdbcType="VARCHAR" />
+				<result column="b_price" property="bPrice" jdbcType="DOUBLE" />
+				<result column="image" property="image" jdbcType="VARCHAR" />
+				<result column="writer" property="writer" jdbcType="VARCHAR" />
+				<result column="stock" property="stock" jdbcType="INTEGER" />
+			</association>
+		</association>
+	</resultMap>
+</mapper>

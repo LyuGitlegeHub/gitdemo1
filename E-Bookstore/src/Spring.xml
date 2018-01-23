@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+     xmlns:context="http://www.springframework.org/schema/context"
+     xmlns:aop="http://www.springframework.org/schema/aop"
+     xmlns:tx="http://www.springframework.org/schema/tx"
+     xmlns:p="http://www.springframework.org/schema/p"
+     xsi:schemaLocation="
+     http://www.springframework.org/schema/beans 
+     http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+     http://www.springframework.org/schema/tx
+     http://www.springframework.org/schema/tx/spring-tx-3.0.xsd
+     http://www.springframework.org/schema/context 
+	 http://www.springframework.org/schema/context/spring-context.xsd	
+     http://www.springframework.org/schema/aop 
+     http://www.springframework.org/schema/aop/spring-aop-3.0.xsd"> 
+	 
+	  
+	  <!-- 配置数据源 -->
+	  <bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource"
+		destroy-method="close">
+		<property name="driverClassName" value="com.mysql.jdbc.Driver" />
+		<property name="url" value="jdbc:mysql://localhost:3306/e_bookstore" />
+		<property name="username" value="root" />
+		<property name="password" value="root" />
+		<!-- 初始化连接大小 -->
+		<property name="initialSize" value="0"></property>
+		<!-- 连接池最大数量 -->
+		<property name="maxActive" value="20"></property>
+		<!-- 连接池最大空闲 -->
+		<property name="maxIdle" value="20"></property>
+		<!-- 连接池最小空闲 -->
+		<property name="minIdle" value="1"></property>
+		<!-- 获取连接最大等待时间 -->
+		<property name="maxWait" value="60000"></property>
+	</bean>
+	
+	<!--创建sqlSessionFactory工厂  -->
+	<!-- spring和MyBatis完美整合，不需要mybatis的配置映射文件 -->
+	<bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
+		<property name="dataSource" ref="dataSource" />
+		<!-- 自动扫描映射文件
+		<property name="mapperLocations" value="classpath:com/sxt/mybatisd1/dao/*.xml"></property>
+		 -->
+	</bean>
+	
+	<!-- DAO接口所在包名，Spring会自动查找其下的类 -->
+	<bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
+		<property name="basePackage" value="com.lyu.bookstore.dao" />
+		<property name="sqlSessionFactoryBeanName" value="sqlSessionFactory"></property>
+	</bean>
+	
+	<!-- 配置事务管理器 -->
+	<bean id="txManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+		<property name="dataSource" ref="dataSource"></property>
+	</bean>
+	<tx:annotation-driven transaction-manager="txManager"/> 
+
+	<!-- 配置Spring国际化信息
+	<bean id="messageSource" class="org.springframework.context.support.ResourceBundleMessageSource">
+		<property name="basename" value="mesages/message"></property>
+	</bean>
+	<bean id="CookieLocaleResolver" class="org.springframework.web.servlet.i18n.CookieLocaleResolver">
+		<property name="cookieMaxAge" value="604800"></property>
+		<property name="defaultLocale" value="zh_CN"></property>
+		<property name="cookieName" value="language"></property>
+	</bean> -->
+	<bean
+        class="org.springframework.web.servlet.mvc.annotation.AnnotationMethodHandlerAdapter">
+        <property name="messageConverters">
+            <list>
+                <bean
+                    class="org.springframework.http.converter.StringHttpMessageConverter">
+                    <property name="supportedMediaTypes">
+                        <list>
+                            <value>text/html;charset=UTF-8</value>
+                        </list>
+                    </property>
+                </bean>
+            </list>
+        </property>
+    </bean>
+</beans>

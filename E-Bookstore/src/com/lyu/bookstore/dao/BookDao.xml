@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.lyu.bookstore.dao.BookDao">
+	<resultMap id="BookBaseResultMap" type="com.lyu.bookstore.bean.Book">
+		<id column="bid" property="bid" jdbcType="INTEGER" />
+		<result column="bookname" property="bookname" jdbcType="VARCHAR" />
+		<result column="b_price" property="bPrice" jdbcType="DOUBLE" />
+		<result column="image" property="image" jdbcType="VARCHAR" />
+		<result column="writer" property="writer" jdbcType="VARCHAR" />
+		<result column="stock" property="stock" jdbcType="INTEGER" />
+	</resultMap>
+	<!-- <sql id="Base_Column_List" > bid, bookname, b_price, image, stock </sql> -->
+</mapper>
